@@ -90,6 +90,17 @@ public sealed class JobService : IJobService
 
         var item = response.Item;
 
+        string[] requiredAttributes =
+        [
+            nameof(DocumentJob.JobId), nameof(DocumentJob.Status), nameof(DocumentJob.Bucket),
+            nameof(DocumentJob.SourceKey), nameof(DocumentJob.CreatedAt)
+        ];
+        if (requiredAttributes.Any(name =>
+                !item.TryGetValue(name, out var value) || string.IsNullOrWhiteSpace(value.S)))
+        {
+            throw new InvalidDataException("The stored job is missing required string attributes.");
+        }
+
         var resultKey = item.TryGetValue(nameof(DocumentJob.ResultKey), out var result)
             ? result.S
             : null;

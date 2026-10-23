@@ -1,0 +1,6 @@
+@model DocumentNoticeViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+<section class="page-heading"><p class="eyebrow">REQUEST NOT COMPLETED</p><h1>@Model.Title</h1><p class="lede">@Model.Message</p></section>
+<section class="panel"><p>No successful result is being reported for this request.</p>@if (Model.RequestId is not null) { <p class="field-help">Request ID: <code>@Model.RequestId</code></p> }<a class="button button-secondary" asp-action="Index" asp-controller="Document">Return to the document lab →</a></section>

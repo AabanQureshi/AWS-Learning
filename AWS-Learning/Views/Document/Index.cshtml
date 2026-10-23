@@ -1,0 +1,49 @@
+@model DocumentIndexViewModel
+@{
+    ViewData["Title"] = "Document lab";
+}
+<section class="page-heading">
+    <p class="eyebrow">01 / DOCUMENT WORKFLOW</p>
+    <h1>One document.<br />Three AWS services.</h1>
+    <p class="lede">Upload a text file, follow its job, and inspect the result. The web app hands the work to a separate worker.</p>
+</section>
+<ol class="flow-strip" aria-label="Document processing flow">
+    <li><span>01</span><strong>S3</strong><small>Store the input</small></li>
+    <li><span>02</span><strong>DynamoDB</strong><small>Track the job</small></li>
+    <li><span>03</span><strong>SQS</strong><small>Deliver the work</small></li>
+    <li><span>04</span><strong>Worker</strong><small>Save the result</small></li>
+</ol>
+<div class="work-grid">
+    <section class="panel" aria-labelledby="upload-title">
+        <p class="eyebrow">START A JOB</p>
+        <h2 id="upload-title">Upload a document</h2>
+        <p>Choose a plain text file. Its original stays in <code>incoming/</code>; the worker writes JSON statistics to <code>processed/</code>.</p>
+        <form asp-controller="Document" asp-action="Upload" method="post" enctype="multipart/form-data" id="upload-form">
+            <div asp-validation-summary="All" class="validation-summary" role="alert"></div>
+            <label asp-for="File">Text document</label>
+            <input asp-for="File" type="file" accept=".txt,text/plain" required aria-describedby="file-help" />
+            <small id="file-help" class="field-help">.txt only · up to 5 MB · each upload gets a unique job ID</small>
+            <button type="submit" class="button button-primary" id="upload-button">Upload &amp; queue <span aria-hidden="true">↗</span></button>
+        </form>
+    </section>
+    <section class="panel panel-muted" id="find-job" aria-labelledby="find-title">
+        <p class="eyebrow">PICK UP WHERE YOU LEFT OFF</p>
+        <h2 id="find-title">Find a job</h2>
+        <p>Paste an ID from a previous upload to see its current state or download its result.</p>
+        <form asp-controller="Document" asp-action="Find" method="get">
+            <label for="job-id">Job ID</label>
+            <input id="job-id" name="jobId" type="text" required maxlength="128" autocomplete="off" placeholder="Paste a job ID" />
+            <button type="submit" class="button button-secondary">Look up job <span aria-hidden="true">→</span></button>
+        </form>
+        <div class="inset-note"><strong>Two processes, one workflow.</strong><p>Run both the web project and <code>AWS-Learning.Worker</code>. With the worker stopped, new jobs stay Pending.</p></div>
+    </section>
+</div>
+@section Scripts {
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', () => {
+            const button = document.getElementById('upload-button');
+            button.disabled = true;
+            button.textContent = 'Uploading…';
+        });
+    </script>
+}

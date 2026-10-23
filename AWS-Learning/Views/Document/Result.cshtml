@@ -1,0 +1,12 @@
+@model DocumentResultViewModel
+@{
+    ViewData["Title"] = "Processing result";
+}
+<a class="back-link" asp-action="Details" asp-route-jobId="@Model.JobId">← Job status</a>
+<section class="page-heading compact"><p class="eyebrow">PROCESSING COMPLETE</p><h1>Your text, counted.</h1><p class="lede">Read from S3, processed by the Worker, and stored as a JSON result.</p></section>
+<div class="statistics-grid">
+    <section class="statistic"><span>WORDS</span><strong>@Model.Statistics.WordCount.ToString("N0")</strong><small>Separated by whitespace</small></section>
+    <section class="statistic"><span>CHARACTERS</span><strong>@Model.Statistics.CharacterCount.ToString("N0")</strong><small>.NET string length (UTF-16 units)</small></section>
+    <section class="statistic"><span>PROCESSED (UTC)</span><strong class="statistic-time">@Model.Statistics.ProcessedAt.ToUniversalTime().ToString("HH:mm:ss")</strong><small>@Model.Statistics.ProcessedAt.ToUniversalTime().ToString("yyyy-MM-dd")</small></section>
+</div>
+<section class="panel"><div class="panel-heading"><div><p class="eyebrow">THE STORED OUTPUT</p><h2>Result JSON</h2></div><a class="button button-primary" asp-action="Download" asp-route-jobId="@Model.JobId">Download JSON ↗</a></div><pre class="json-output"><code>@Model.Json</code></pre><p class="field-help">Job <code>@Model.JobId</code> · the original document remains in S3.</p></section>

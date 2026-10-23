@@ -8,7 +8,7 @@ namespace AWS_Learning.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Document");
         }
 
         public IActionResult Privacy()

@@ -15,7 +15,7 @@ The repository currently contains a runnable ASP.NET Core MVC baseline with:
 - Separate web and Worker hosts, each registering S3, SQS, and DynamoDB clients with its own local named profile.
 - Service interfaces, AWS SDK service implementations, and result data contracts for the learning workflow.
 
-The service implementations cover document storage, job persistence, messaging, and text statistics. The baseline Worker host starts idle. Web and Worker integration are developed in exercise branches.
+The service implementations cover document storage, job persistence, messaging, and text statistics. On `main`, the web and Worker hosts remain a clean setup snapshot. This exercise branch, `day-1-documents`, adds the web workflow and an active Worker. See [the Day 1 debugging guide](docs/day-1-documents.md).
 
 ## Solution projects
 
@@ -24,7 +24,7 @@ The service implementations cover document storage, job persistence, messaging, 
 | `AWS-Learning` | ASP.NET Core MVC web app | Controllers, views, HTTP pipeline, and web host setup |
 | `AWS-Learning.Shared` | Class library | Shared models and service interfaces; no ASP.NET Core or AWS SDK dependency |
 | `AWS-Learning.Services` | Class library | Service implementations, typed AWS configuration, and dependency injection registration |
-| `AWS-Learning.Worker` | .NET Worker Service | Separate background host, currently idle |
+| `AWS-Learning.Worker` | .NET Worker Service | Separate background host; idle on main, active in the Day 1 exercise |
 
 Both hosts reference Services, which references Shared. Existing namespaces are retained to avoid unnecessary controller changes.
 

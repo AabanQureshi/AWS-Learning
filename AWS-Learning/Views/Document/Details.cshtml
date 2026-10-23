@@ -1,0 +1,44 @@
+@model DocumentDetailsViewModel
+@{
+    ViewData["Title"] = "Job status";
+    var job = Model.Job;
+}
+<a class="back-link" asp-action="Index">← Document lab</a>
+<section class="page-heading compact">
+    <p class="eyebrow">FOLLOW THE WORK</p>
+    <div class="heading-row"><h1>Job status</h1><span class="status-badge" data-status="@job.Status">@job.Status</span></div>
+    <p class="lede">The database records the outcome. The queue delivers the instruction.</p>
+</section>
+<section class="panel" id="job-panel" data-status-url="@Url.Action("Status", new { jobId = job.JobId })" data-initial-status="@job.Status">
+    <div class="panel-heading"><div><span class="field-label">JOB ID</span><code class="job-id">@job.JobId</code></div><a asp-action="Details" asp-route-jobId="@job.JobId" class="button button-secondary">Refresh status</a></div>
+    <ol class="job-progress" aria-label="Job stages">
+        <li class="@(job.Status == "Pending" ? "current" : "")"><span>01</span><strong>Pending</strong><small>Input stored; job queued</small></li>
+        <li class="@(job.Status == "Processing" ? "current" : "")"><span>02</span><strong>Processing</strong><small>Worker reads and counts text</small></li>
+        <li class="@(job.Status == "Completed" ? "current" : "")"><span>03</span><strong>Completed</strong><small>JSON result stored in S3</small></li>
+    </ol>
+    @if (job.Status == "Failed")
+    {
+        <div class="feedback feedback-warning"><strong>A processing attempt failed.</strong> Check the Worker log. The message remains eligible for retry; repeated failures can send it to the dead-letter queue.</div>
+    }
+    else if (job.Status == "Pending")
+    {
+        <div class="feedback">Waiting for the separate Worker. Start it in your IDE to continue the flow.</div>
+    }
+    else if (job.Status == "Processing")
+    {
+        <div class="feedback">The Worker is processing this job. Refresh when you resume execution from a breakpoint.</div>
+    }
+    <dl class="metadata">
+        <div><dt>Created (UTC)</dt><dd>@job.CreatedAt.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")</dd></div>
+        <div><dt>Completed (UTC)</dt><dd>@(job.CompletedAt?.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss") ?? "—")</dd></div>
+        <div><dt>Result key</dt><dd><code>@(job.ResultKey ?? "Not available yet")</code></dd></div>
+    </dl>
+    @if (job.Status == "Completed")
+    {
+        <div class="actions"><a class="button button-primary" asp-action="Result" asp-route-jobId="@job.JobId">View result ↗</a><a class="button button-secondary" asp-action="Download" asp-route-jobId="@job.JobId">Download JSON</a></div>
+    }
+    <div class="refresh-controls"><label><input type="checkbox" id="auto-refresh" /> Check status every 5 seconds</label><span id="refresh-message" role="status">Manual refresh is useful while debugging.</span></div>
+</section>
+@section Scripts {
+    <script src="~/js/job-status.js" asp-append-version="true"></script>
+}
