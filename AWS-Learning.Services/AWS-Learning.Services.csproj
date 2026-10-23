@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../AWS-Learning.Shared/AWS-Learning.Shared.csproj" />
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="4.0.109.1" />
+    <PackageReference Include="AWSSDK.S3" Version="4.0.104.6" />
+    <PackageReference Include="AWSSDK.SQS" Version="4.0.100.20" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="10.0.0" />
+  </ItemGroup>
+</Project>

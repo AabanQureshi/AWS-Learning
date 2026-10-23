@@ -11,8 +11,30 @@ The repository currently contains a runnable ASP.NET Core MVC baseline with:
 - Standard application configuration and logging.
 - A liveness endpoint at `/health`.
 - Official SDK packages for Amazon S3, Amazon SQS, and Amazon DynamoDB.
+- Typed AWS configuration with required-field validation at startup.
+- Separate web and Worker hosts, each registering S3, SQS, and DynamoDB clients with its own local named profile.
+- Service interfaces, AWS SDK service implementations, and result data contracts for the learning workflow.
 
-AWS client registration, service configuration, and document-processing features will be implemented as learning exercises. They are not included in the current baseline.
+The service implementations cover document storage, job persistence, messaging, and text statistics. The baseline Worker host starts idle. Web and Worker integration are developed in exercise branches.
+
+## Solution projects
+
+| Project | Type | Responsibility |
+| --- | --- | --- |
+| `AWS-Learning` | ASP.NET Core MVC web app | Controllers, views, HTTP pipeline, and web host setup |
+| `AWS-Learning.Shared` | Class library | Shared models and service interfaces; no ASP.NET Core or AWS SDK dependency |
+| `AWS-Learning.Services` | Class library | Service implementations, typed AWS configuration, and dependency injection registration |
+| `AWS-Learning.Worker` | .NET Worker Service | Separate background host, currently idle |
+
+Both hosts reference Services, which references Shared. Existing namespaces are retained to avoid unnecessary controller changes.
+
+`AddLearningServices()` registers the scoped application services. `AddLearningAws(configuration)` selects the API profile; the Worker calls it with `useWorkerProfile: true`. Each process has its own singleton SDK clients, so keyed clients are no longer needed.
+
+The shared upload contract accepts a stream, filename, and size instead of the web-specific `IFormFile`. The web layer will adapt HTTP uploads to that contract during the exercises.
+
+Persisted DynamoDB attribute names currently follow `nameof(DocumentJob.Property)`. This avoids spelling errors, but a C# property rename also changes the persisted attribute contract. Treat those renames as schema changes.
+
+This learning version does not implement an outbox or an atomic processing lease. Upload, job creation, and queue publication are separate operations, and multiple workers could compute the same job concurrently. Use a single Worker while learning the initial flow.
 
 ## Learning goals
 
@@ -32,7 +54,7 @@ AWS client registration, service configuration, and document-processing features
 - AWS CLI v2 for credential profiles and service operations when needed.
 - An AWS account or a reachable AWS-compatible emulator for the service exercises.
 
-No AWS connection is required to run the baseline application.
+The liveness endpoint does not require a connection to AWS or Floci. AWS operations require the configured endpoint and credential profiles to be available.
 
 ## Run the application
 
@@ -43,6 +65,16 @@ dotnet restore AWS-Learning.slnx
 dotnet build AWS-Learning.slnx
 dotnet run --project AWS-Learning --launch-profile https
 ```
+
+Run the independent Worker host in another terminal:
+
+```powershell
+dotnet run --project AWS-Learning.Worker
+```
+
+Its included launch profile selects the Development environment and loads its own `appsettings.Development.json`. Both hosts currently point to the same emulator resources. Keep those resource settings consistent between the two configuration files when changing them.
+
+For a future polling loop, resolve scoped services inside a scope per processing unit; do not inject scoped services directly into the long-lived hosted Worker. The polling loop is intentionally not implemented yet.
 
 If the local ASP.NET Core development certificate is not trusted, follow the .NET development certificate setup for your operating system. On Windows:
 
