@@ -2,6 +2,8 @@
 
 Branch: `day-1-documents`. The `main` branch remains the reviewed service/setup snapshot with a fresh web template and an idle Worker. Exercise changes stay on this branch.
 
+For installed teaching breakpoints, inspection expressions, and ordered browser actions, follow [the guided debugging exercises](day-1-debugging-exercises.md).
+
 ## Run in your IDE
 
 1. Open `AWS-Learning.slnx`.
