@@ -1,6 +1,13 @@
 <Solution>
   <Project Path="AWS-Learning/AWS-Learning.csproj" />
   <Project Path="AWS-Learning.Shared/AWS-Learning.Shared.csproj" />
+  <Folder Name="/exercises/" />
+  <Folder Name="/exercises/day-5/">
+    <Project Path="exercises/day-5/AWSLearning.Day5.Lambda.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AWSLearning.Day5.Lambda.Tests/AWSLearning.Day5.Lambda.Tests.csproj" />
+  </Folder>
   <Project Path="AWS-Learning.Services/AWS-Learning.Services.csproj" />
   <Project Path="AWS-Learning.Worker/AWS-Learning.Worker.csproj" />
 </Solution>
