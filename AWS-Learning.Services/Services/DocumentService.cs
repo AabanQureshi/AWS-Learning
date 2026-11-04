@@ -88,6 +88,7 @@ public sealed class DocumentService : IDocumentService
     string jobId,
     CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(jobId);
         ArgumentException.ThrowIfNullOrWhiteSpace(jobId);
 
         var job = await jobs.GetAsync(jobId, cancellationToken);

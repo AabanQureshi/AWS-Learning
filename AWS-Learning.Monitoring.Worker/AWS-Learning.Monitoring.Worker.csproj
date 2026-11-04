@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>AWS_Learning.Monitoring.Worker</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWS.Logger.AspNetCore" Version="4.0.2" />
+    <PackageReference Include="AWSSDK.CloudWatch" Version="4.0.107.1" />
+    <PackageReference Include="AWSSDK.Core" Version="4.0.102.13" />
+    <PackageReference Include="AWSSDK.SQS" Version="4.0.100.20" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+  </ItemGroup>
+</Project>

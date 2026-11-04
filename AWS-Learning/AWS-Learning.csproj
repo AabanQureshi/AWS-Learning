@@ -11,4 +11,8 @@
     <ProjectReference Include="../AWS-Learning.Services/AWS-Learning.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AWS.Logger.AspNetCore" Version="4.0.2" />
+  </ItemGroup>
+
 </Project>

@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../AWS-Learning.Services/AWS-Learning.Services.csproj" />
+    <PackageReference Include="AWS.Logger.AspNetCore" Version="4.0.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
   </ItemGroup>
 </Project>

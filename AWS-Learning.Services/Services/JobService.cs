@@ -67,6 +67,7 @@ public sealed class JobService : IJobService
     string jobId,
     CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(jobId);
         ArgumentException.ThrowIfNullOrWhiteSpace(jobId);
 
         var request = new GetItemRequest

@@ -1,7 +1,8 @@
 # AWS learning app
 
 - Target .NET 10 only.
-- User explicitly requested separate class libraries and a standalone .NET Worker Service. Keep the four-project layout: web host, Shared contracts/models, Services configuration/implementations, and Worker host. Shared must not depend on ASP.NET Core or AWS SDK packages.
+- User explicitly requested separate class libraries and a standalone .NET Worker Service. Preserve the web host, Shared contracts/models, Services configuration/implementations, and document Worker host. Day 3 adds a separate monitoring Worker host so document processing can stop independently of monitoring. Shared must not depend on ASP.NET Core or AWS SDK packages.
+- Day 3 uses branch `day-3`, created from `day-1-documents`. Aaban implemented the monitoring collection loop in his IDE. He explicitly authorized adding CloudWatch logging to the web and monitoring hosts; preserve the existing document Worker logging and learner edits.
 - Each host registers ordinary singleton AWS clients for its own profile via the shared DI extensions; do not reintroduce keyed API/worker clients inside the web host.
 - Keep code simple. No CQRS, MediatR, AutoMapper, or architectural scaffolding.
 - Aaban writes AWS configuration and interactions in his IDE for hands-on learning. Guide and review; do not implement exercises unless explicitly asked.

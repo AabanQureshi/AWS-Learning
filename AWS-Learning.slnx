@@ -1,6 +1,7 @@
 <Solution>
   <Project Path="AWS-Learning/AWS-Learning.csproj" />
   <Project Path="AWS-Learning.Shared/AWS-Learning.Shared.csproj" />
+  <Project Path="AWS-Learning.Monitoring.Worker/AWS-Learning.Monitoring.Worker.csproj" />
   <Project Path="AWS-Learning.Services/AWS-Learning.Services.csproj" />
   <Project Path="AWS-Learning.Worker/AWS-Learning.Worker.csproj" />
 </Solution>

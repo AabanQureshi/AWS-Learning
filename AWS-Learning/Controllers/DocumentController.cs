@@ -46,6 +46,7 @@ public sealed class DocumentController(IDocumentService documents) : Controller
     [HttpGet("find")]
     public IActionResult Find(string? jobId)
     {
+        ArgumentNullException.ThrowIfNull(jobId);
         if (string.IsNullOrWhiteSpace(jobId))
         {
             ModelState.AddModelError(string.Empty, "Enter a job ID to look up its status.");
@@ -60,6 +61,8 @@ public sealed class DocumentController(IDocumentService documents) : Controller
     [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public async Task<IActionResult> Details(string jobId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(jobId);
+
         var job = await documents.GetJobAsync(jobId, cancellationToken)
             ?? throw new KeyNotFoundException("Job not found.");
         return View(new DocumentDetailsViewModel(job));
